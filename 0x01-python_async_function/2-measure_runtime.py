@@ -5,9 +5,9 @@ import asyncio
 import time
 
 
-async def measure_time(n: int, max_delay: int) -> float:
+def measure_time(n: int, max_delay: int) -> float:
     """ Times the function call """
     s = time.perf_counter()
-    await wait_n(n, max_delay)
+    asyncio.run(wait_n(n, max_delay))
     elapsed = time.perf_counter() - s
     return elapsed / n
