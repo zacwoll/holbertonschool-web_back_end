@@ -30,3 +30,9 @@ class BaseCaching():
         """ Get an item by key
         """
         raise NotImplementedError("get must be implemented in your cache class")
+
+class CacheItem:
+    def __init__(self, key, value):
+        """ Cache Item """
+        self.key = key
+        self.value = value

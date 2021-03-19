@@ -2,10 +2,16 @@
 """ Basic Cache implementing MRU """
 # imports
 BasicCache = __import__('0-basic_cache').BasicCache
+CacheItem = __import__('base_caching').CacheItem
 
+
+class MRUCacheItem(CacheItem):
+    def __init__(self, key, value, age):
+        super().__init__(key, value)
+        self.age = age
 
 class MRUCache(BasicCache):
-    """ MRU (First In Last Out) implementation of BasicCache """
+    """ MRU (Most Recently Used) implementation of BasicCache """
     def __init__(self):
         """ Constructor """
         super().__init__()
@@ -17,25 +23,27 @@ class MRUCache(BasicCache):
         if (key is None or item is None):
             return
 
-        # key is in cache, so update cache without key
+        # key is in cache, so remake cache without key
         if key in self.cache_data:
-            self.MRU = [k for k in self.MRU if key not in k[0]]
+            self.MRU = [ci for ci in self.MRU if ci.key != key]
+
         # Length will be longer than max capacity, make room
         elif len(self.cache_data) == self.MAX_ITEMS:
             discard = self.MRU[0]
             for x in self.MRU:
-                if x[1] < discard[1]:
+                if x.age < discard.age:
                     discard = x
-            print("DISCARD: {}".format(discard[0]))
-            del self.cache_data[discard[0]]
+            print("DISCARD: {}".format(discard.key))
+            del self.cache_data[discard.key]
             self.MRU.remove(discard)
 
         # increase age of all items
         for x in self.MRU:
-            x[1] += 1
+            x.age += 1
 
         self.cache_data[key] = item
-        self.MRU.append([key, 0])
+        data = MRUCacheItem(key, item, 0)
+        self.MRU.append(data)
 
     def get(self, key):
         """ Get item from cache """
@@ -43,8 +51,8 @@ class MRUCache(BasicCache):
             return None
         else:
             for x in self.MRU:
-                if x[0] == key:
-                    x[1] = 0
+                if x.key == key:
+                    x.age = 0
                 else:
-                    x[1] += 1
+                    x.age += 1
             return self.cache_data[key]

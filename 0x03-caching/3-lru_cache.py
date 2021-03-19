@@ -2,10 +2,16 @@
 """ Basic Cache implementing LRU """
 # imports
 BasicCache = __import__('0-basic_cache').BasicCache
+CacheItem = __import__('base_caching').CacheItem
 
+
+class LRUCacheItem(CacheItem):
+    def __init__(self, key, value, age):
+        super().__init__(key, value)
+        self.age = age
 
 class LRUCache(BasicCache):
-    """ LRU (First In Last Out) implementation of BasicCache """
+    """ LRU (Least Recently Used) implementation of BasicCache """
     def __init__(self):
         """ Constructor """
         super().__init__()
@@ -18,23 +24,24 @@ class LRUCache(BasicCache):
             return
 
         if key in self.cache_data:
-            self.LRU = [k for k in self.LRU if key not in k[0]]
+            self.LRU = [ci for ci in self.LRU if ci.key != key]
 
         # increase age of all items
         for x in self.LRU:
-            x[1] += 1
+            x.age += 1
 
         self.cache_data[key] = item
-        self.LRU.append([key, 0])
+        data = LRUCacheItem(key, item, 0)
+        self.LRU.append(data)
 
         # Length is longer than max capacity, make room
         if len(self.cache_data) > self.MAX_ITEMS:
             discard = self.LRU[0]
             for x in self.LRU:
-                if x[1] > discard[1]:
+                if x.age > discard.age:
                     discard = x
-            print("DISCARD: {}".format(discard[0]))
-            del self.cache_data[discard[0]]
+            print("DISCARD: {}".format(discard.key))
+            del self.cache_data[discard.key]
             self.LRU.remove(discard)
 
     def get(self, key):
@@ -43,8 +50,8 @@ class LRUCache(BasicCache):
             return None
         else:
             for x in self.LRU:
-                if x[0] == key:
-                    x[1] = 0
+                if x.key == key:
+                    x.age = 0
                 else:
-                    x[1] += 1
+                    x.age += 1
             return self.cache_data[key]
