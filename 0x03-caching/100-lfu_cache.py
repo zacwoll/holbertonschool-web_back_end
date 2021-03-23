@@ -2,16 +2,25 @@
 """ Basic Cache implementing LFU """
 # imports
 BasicCache = __import__('0-basic_cache').BasicCache
-CacheItem = __import__('base_caching').CacheItem
 
+
+class CacheItem:
+    """ Implementation of a cache item """
+    def __init__(self, key, value):
+        """ Cache Item """
+        self.key = key
+        self.value = value
 
 class LFUCacheItem(CacheItem):
+    """ Least Frequently Used Inherits from CacheItem """
     def __init__(self, key, value, age, freq):
+        """ Constructor """
         super().__init__(key, value)
         self.age = age
         self.freq = freq
 
     def updateItem(self, value):
+        """ Update a cache item """
         self.value = value
         self.age = 0
         self.freq += 1
@@ -72,3 +81,41 @@ class LFUCache(BasicCache):
                 else:
                     x.age += 1
             return self.cache_data[key]
+
+if __name__ == "__main__":
+    my_cache = LFUCache()
+    my_cache.put("A", "Hello")
+    my_cache.put("B", "World")
+    my_cache.put("C", "Holberton")
+    my_cache.put("D", "School")
+    my_cache.print_cache()
+    print(my_cache.get("B"))
+    my_cache.put("E", "Battery")
+    my_cache.print_cache()
+    my_cache.put("C", "Street")
+    my_cache.print_cache()
+    print(my_cache.get("A"))
+    print(my_cache.get("B"))
+    print(my_cache.get("C"))
+    my_cache.put("F", "Mission")
+    my_cache.print_cache()
+    my_cache.put("G", "San Francisco")
+    my_cache.print_cache()
+    my_cache.put("H", "H")
+    my_cache.print_cache()
+    my_cache.put("I", "I")
+    my_cache.print_cache()
+    print(my_cache.get("I"))
+    print(my_cache.get("H"))
+    print(my_cache.get("I"))
+    print(my_cache.get("H"))
+    print(my_cache.get("I"))
+    print(my_cache.get("H"))
+    my_cache.put("J", "J")
+    my_cache.print_cache()
+    my_cache.put("K", "K")
+    my_cache.print_cache()
+    my_cache.put("L", "L")
+    my_cache.print_cache()
+    my_cache.put("M", "M")
+    my_cache.print_cache()
