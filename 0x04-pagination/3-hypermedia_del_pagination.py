@@ -11,7 +11,7 @@ from typing import Dict, List, Tuple
 
 def index_range(page: int, page_size: int) -> Tuple:
     """ Return Tuple from page and page_size """
-    start = (page - 1) * page_size
+    start = page * page_size
     end = start + page_size
     return (start, end)
 
