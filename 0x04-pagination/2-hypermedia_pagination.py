@@ -44,21 +44,17 @@ class Server:
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> List[List]:
         """ Return Hypermedia pagination """
-        hyper = {}
-        hyper['page'] = page
-        hyper['data'] = self.get_page(page, page_size)
-        hyper['page_size'] = len(hyper['data'])
-        if page == 1:
-            hyper['prev_page'] = None
-        else:
-            hyper['prev_page'] = page - 1
-        total_pages = math.ceil(len(self.__dataset) / page_size)
-        hyper['total_pages'] = total_pages
-        if page < total_pages:
-            hyper['next_page'] = page + 1
-        else:
-            hyper['next_page'] = None
-        return hyper
+        pages = math.ceil(len(self.dataset()) / page_size)
+
+        return {
+            "page_size": page_size,
+            "page": page,
+            "data": self.get_page(page, page_size),
+            "next_page": page + 1 if page + 1 <= pages else None,
+            "prev_page": page - 1 if page > 1 else None,
+            "total_pages": pages
+        }
+
 
 if __name__ == "__main__":
     server = Server()

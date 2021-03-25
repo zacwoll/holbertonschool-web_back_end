@@ -8,7 +8,7 @@ from typing import List, Tuple
 
 def index_range(page: int, page_size: int) -> Tuple:
     """ Return Tuple from page and page_size """
-    start = (page - 1) * page_size
+    start = page * page_size
     end = start + page_size
     return (start, end)
 
@@ -39,12 +39,13 @@ class Server:
         query = index_range(page, page_size)
         start, end = query[0], query[1]
 
-        dataset = self.dataset()
-        return dataset[start: end]
+        data = self.dataset()
+
+        return data[start:end]
+
 
 if __name__ == "__main__":
     server = Server()
-
     try:
         should_err = server.get_page(-10, 2)
     except AssertionError:
@@ -59,7 +60,6 @@ if __name__ == "__main__":
         should_err = server.get_page(2, 'Bob')
     except AssertionError:
         print("AssertionError raised when page and/or page_size are not ints")
-
 
     print(server.get_page(1, 3))
     print(server.get_page(3, 2))
