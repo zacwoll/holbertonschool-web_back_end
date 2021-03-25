@@ -2,11 +2,10 @@
 """
 Deletion-resilient hypermedia pagination
 """
-
+# imports
 import csv
 import math
 from typing import Dict, List, Tuple
-
 
 
 def index_range(page: int, page_size: int) -> Tuple:
@@ -14,6 +13,7 @@ def index_range(page: int, page_size: int) -> Tuple:
     start = page * page_size
     end = start + page_size
     return (start, end)
+
 
 class Server:
     """Server class to paginate a database of popular baby names.
@@ -68,6 +68,7 @@ class Server:
             'page_size': page_size,
             'next_index': next_index
         }
+
 
 if __name__ == "__main__":
     server = Server()
