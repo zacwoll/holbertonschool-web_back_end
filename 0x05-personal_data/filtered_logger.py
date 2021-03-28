@@ -12,11 +12,14 @@ from typing import List
 
 PII_FIELDS = ("email", "phone", "ssn", "ip", "password")
 
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str):
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     """ Returns the log message obfuscated """
     for field in fields:
-        reg = f"(?<={field}=)([^{separator}]*)"
-        message = re.sub(reg, redaction, message)
+        message = re.sub(
+            f"{field}=(.+?){separator}",
+            f"{field}={redaction}{separator}",
+            message
+        )
     return message
 
 
@@ -27,14 +30,18 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
-        self.fields = fields
+        self.__fields = [i for i in fields]
 
     def format(self, record: logging.LogRecord) -> str:
         """ filter values in incoming log records """
-        return filter_datum(self.fields, self.REDACTION, super().format(record), self.SEPARATOR)
-
+        return filter_datum(
+            self.__fields,
+            self.REDACTION,
+            super().format(record),
+            self.SEPARATOR
+        )
 
 def get_logger() -> logging.Logger:
     """ Creates log for user data """
