@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """ Module docstring """
 # imports
-import csv
 import logging
 import mysql.connector
 from os import getenv
-import sys
 import re
 from typing import List
 
-
 PII_FIELDS = ("email", "phone", "ssn", "ip", "password")
+
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     """ Returns the log message obfuscated """
