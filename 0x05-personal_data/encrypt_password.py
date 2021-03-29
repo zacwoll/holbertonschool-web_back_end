@@ -3,12 +3,13 @@
 # imports
 import bcrypt
 
-def hash_password(password: str):
+
+def hash_password(password: str)  -> bytes:
     """ Hashes password and salts it """
     return bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
 
-def is_valid(password: str, hashed_pw):
+def is_valid(password: str, hashed_pw) -> bool:
     return bcrypt.checkpw(password.encode('utf8'), hashed_pw)
 
 if __name__ == "__main__":
