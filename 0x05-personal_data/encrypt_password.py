@@ -9,8 +9,10 @@ def hash_password(password: str)  -> bytes:
     return bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
 
-def is_valid(password: str, hashed_pw) -> bool:
+def is_valid(password: str, hashed_pw: bytes) -> bool:
+    """ Checks if a password is valid """
     return bcrypt.checkpw(password.encode('utf8'), hashed_pw)
+
 
 if __name__ == "__main__":
     password = "MyAmazingPassw0rd"

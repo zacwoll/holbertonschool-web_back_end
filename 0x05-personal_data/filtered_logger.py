@@ -29,6 +29,7 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]):
+        """ Constructor """
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.__fields = [i for i in fields]
 
@@ -41,6 +42,7 @@ class RedactingFormatter(logging.Formatter):
             self.SEPARATOR
         )
 
+
 def get_logger() -> logging.Logger:
     """ Creates log for user data """
     user_data = logging.getLogger('user_data')
@@ -50,6 +52,7 @@ def get_logger() -> logging.Logger:
     handler.setFormatter(RedactingFormatter(fields=PII_FIELDS))
     user_data.addHandler(handler)
     return user_data
+
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Return a connection to a MySQL server """
@@ -69,6 +72,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
     return connection
 
+
 def main():
     """ Executes Log of current database """
     user_data = get_logger()
@@ -83,7 +87,8 @@ def main():
     cursor.close()
     db.close()
 
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
     # print("Task 0:\n")
     # fields = ["password", "date_of_birth"]
     # messages = ["name=egg;email=eggmin@eggsample.com;password=eggcellent;date_of_birth=12/12/1986;", "name=bob;email=bob@dylan.com;password=bobbycool;date_of_birth=03/04/1993;"]
