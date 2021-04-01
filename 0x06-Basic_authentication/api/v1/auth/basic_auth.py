@@ -19,13 +19,13 @@ class BasicAuth(Auth):
             return None
 
         try:
-            auth_type, auth_code = authorization_header.split(' ')
-            if start != 'Basic':
+            auth_type, auth_str = authorization_header.split(' ')
+            if auth_type != 'Basic':
                 return None
         except ValueError:
             return None
 
-        return auth_code
+        return auth_str
 
     def decode_base64_authorization_header(
             self,
