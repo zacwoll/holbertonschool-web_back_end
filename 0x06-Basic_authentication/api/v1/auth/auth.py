@@ -8,10 +8,10 @@ class Auth():
     """ Authentication Object """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """ Require Authentication """
-        if not path:
+
+        if path is None or excluded_paths is None:
             return True
-        if excluded_paths is None or excluded_paths == []:
-            return True
+
         if path[-1] != "/":
             path += "/"
         if path in excluded_paths:
@@ -23,13 +23,16 @@ class Auth():
         """ authorization header """
         if request is None:
             return None
-        try:
-            auth = request.headers['Authorization']
-        except KeyError:
-            return None
-        return auth
+
+        for header in request.headers:
+            key, value = header
+            if key == 'Authorization':
+                return value
+
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
+        """ Default Overload """
         return None
 
 
