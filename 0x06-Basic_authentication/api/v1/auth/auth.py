@@ -19,7 +19,6 @@ class Auth():
         else:
             return True
 
-
     def authorization_header(self, request=None) -> str:
         """ authorization header """
         if request is None:
@@ -29,7 +28,6 @@ class Auth():
         except KeyError:
             return None
         return auth
-
 
     def current_user(self, request=None) -> TypeVar('User'):
         return None
@@ -43,4 +41,5 @@ if __name__ == "__main__":
     print(a.require_auth("/api/v1/status/", ["/api/v1/status/"]))
     print(a.require_auth("/api/v1/status", ["/api/v1/status/"]))
     print(a.require_auth("/api/v1/users", ["/api/v1/status/"]))
-    print(a.require_auth("/api/v1/users", ["/api/v1/status/", "/api/v1/stats"]))
+    print(a.require_auth("/api/v1/users", ["/api/v1/status/",
+                                           "/api/v1/stats"]))
