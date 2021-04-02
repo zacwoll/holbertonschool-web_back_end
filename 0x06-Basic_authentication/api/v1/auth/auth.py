@@ -14,12 +14,17 @@ class Auth():
 
         if path[-1] != "/":
             path += "/"
+
+        if path in excluded_paths:
+            return False
+
         for excluded_path in excluded_paths:
             if excluded_path[-1] == "*":
                 # Matches patterns up to asterisk (*)
-                base_pattern = p[0:-1]
+                base_pattern = excluded_path[0:-1]
                 if base_pattern in path:
                     return False
+
         return True
 
     def authorization_header(self, request=None) -> str:
