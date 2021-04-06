@@ -1,4 +1,4 @@
-# 0x06 Basic Authentication
+# Session Authentication
 
 # Simple API
 
