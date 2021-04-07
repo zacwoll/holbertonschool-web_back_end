@@ -43,6 +43,15 @@ class Auth():
         """ Default Overload """
         return None
 
+    def session_cookie(self, request=None):
+        """ returns a cookie from a request """
+        if request is None:
+            return None
+        from os import getenv
+        session_name = getenv('SESSION_NAME')
+        cookie = request.cookies.get(session_name)
+        return cookie
+
 
 if __name__ == "__main__":
     a = Auth()
