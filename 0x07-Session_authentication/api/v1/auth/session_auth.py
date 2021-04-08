@@ -27,6 +27,9 @@ class SessionAuth(Auth):
         if not isinstance(session_id, str):
             return None
 
+        if session_id not in self.user_id_by_session_id:
+            return None
+
         return self.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None) -> TypeVar(User):
