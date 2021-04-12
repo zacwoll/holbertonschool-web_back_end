@@ -5,7 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
-from typing import TypeVar
 
 from user import Base, User
 
@@ -26,25 +25,25 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """ Adds a user """
+        """ This method adds a user to the DB """
         new_user = User(email=email, hashed_password=hashed_password)
         self._session.add(new_user)
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs) -> TypeVar(User):
-        """ Returns first user from filter """
-        user = self._session.query(User).filter_by(**kwargs).one()
-        if user is None:
-            raise NoResultFound
-        return user
+    def find_user_by(self, **kwargs) -> User:
+        """ Returns first row found in users table with args from kwargs """
+        return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
-            if key not in user.__dict__:
+            if not hasattr(user, key):
                 raise ValueError
+            if key in ["email", "hashed_password"]:
+                if value is None or value == "":
+                    raise ValueError
             setattr(user, key, value)
         self._session.commit()
         return None
