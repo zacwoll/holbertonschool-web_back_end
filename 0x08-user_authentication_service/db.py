@@ -3,8 +3,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.exc import IntegrityError
 
 from user import Base, User
 
@@ -33,7 +31,6 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns first row found in users table with args from kwargs """
-
         return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
