@@ -95,7 +95,7 @@ class Auth:
         """ Updates a user password to a provided password """
         try:
             user = self._db.find_user_by(reset_token=reset_token)
-        except NoResultFound:
+        except Exception:
             raise ValueError
 
         hashed_password = _hash_password(password)
