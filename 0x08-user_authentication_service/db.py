@@ -30,11 +30,11 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
-        """ Returns first row found in users table with args from kwargs """
+        """ Returns first User in DB matching kwargs """
         return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """ Updates a user row with args from kwargs in the DB """
+        """ Updates a user with kwargs in the DB """
         user = self.find_user_by(id=user_id)
 
         for key in kwargs:
