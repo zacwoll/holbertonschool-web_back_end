@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """ This module creates the database ORM """
 from sqlalchemy import create_engine
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
@@ -33,7 +35,14 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns first User in DB matching kwargs """
-        return self._session.query(User).filter_by(**kwargs).one()
+        if not kwargs:
+            raise InvalidRequestError
+        if not all(key in User.__table__.columns for key in kwargs):
+            raise InvalidRequestError
+        row = self._session.query(User).filter_by(**kwargs).one()
+        if not row:
+            raise NoResultFound
+        return row
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user with kwargs in the DB """
