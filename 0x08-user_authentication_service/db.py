@@ -8,9 +8,11 @@ from user import Base, User
 
 
 class DB:
+    """ Database connection to SQLite via SQLAlchemy """
 
     def __init__(self):
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        """ Instantiate DB Engine """
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None

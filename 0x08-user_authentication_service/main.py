@@ -15,20 +15,20 @@ def register_user(email: str, password: str) -> None:
 def log_in_wrong_password(email: str, password: str) -> None:
     """ Testing log_in_wrong_password function """
     data = {"email": email, "password": password}
-    response = requests.post("http://0.0.0.0:5000/sessions", data)
+    response = requests.post("http://localhost:5000/sessions", data)
     assert response.status_code == 401
 
 
 def profile_unlogged() -> None:
     """ Testing profile_unlogged function """
-    response = requests.get("http://0.0.0.0:5000/profile")
+    response = requests.get("http://localhost:5000/profile")
     assert response.status_code == 403
 
 
 def log_in(email: str, password: str) -> str:
     """ Testing log_in function """
     data = {"email": email, "password": password}
-    response = requests.post("http://0.0.0.0:5000/sessions", data)
+    response = requests.post("http://localhost:5000/sessions", data)
     assert response.status_code == 200
     assert response.json() == {"email": email, "message": "logged in"}
     return response.cookies.get("session_id")
@@ -38,7 +38,7 @@ def profile_logged(session_id: str) -> None:
     """ Testing profile_logged function """
     found_user = AUTH.get_user_from_session_id(session_id)
     cookies = {"session_id": session_id}
-    response = requests.get("http://0.0.0.0:5000/profile", cookies=cookies)
+    response = requests.get("http://localhost:5000/profile", cookies=cookies)
     assert response.status_code == 200
     assert response.json() == {"email": found_user.email}
 
@@ -46,7 +46,8 @@ def profile_logged(session_id: str) -> None:
 def log_out(session_id: str) -> None:
     """ Testing log_out function """
     cookies = {"session_id": session_id}
-    response = requests.delete("http://0.0.0.0:5000/sessions", cookies=cookies)
+    response = requests.delete("http://localhost:5000/sessions",
+                               cookies=cookies)
     assert response.status_code == 200
     assert response.json() == {"message": "Bienvenue"}
 
@@ -54,7 +55,7 @@ def log_out(session_id: str) -> None:
 def reset_password_token(email: str) -> str:
     """ Testing reset_password_token function """
     data = {"email": email}
-    response = requests.post("http://0.0.0.0:5000/reset_password", data)
+    response = requests.post("http://localhost:5000/reset_password", data)
     found_user = AUTH._db.find_user_by(email=email)
     res_tok = found_user.reset_token
     assert response.status_code == 200
@@ -66,7 +67,7 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
     """ Testing update_password function """
     data = {"email": email, "reset_token": reset_token,
             "new_password": new_password}
-    response = requests.put("http://0.0.0.0:5000/reset_password", data)
+    response = requests.put("http://localhost:5000/reset_password", data)
     assert response.status_code == 200
     assert response.json() == {"email": email, "message": "Password updated"}
 
