@@ -33,17 +33,17 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns first row found in users table with args from kwargs """
+
         return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
         user = self.find_user_by(id=user_id)
-        for key, value in kwargs.items():
-            if not hasattr(user, key):
+
+        for key in kwargs:
+            if key not in user.__dir__():
                 raise ValueError
-            if key in ["email", "hashed_password"]:
-                if value is None or value == "":
-                    raise ValueError
-            setattr(user, key, value)
+            setattr(user, key, kwargs[key])
+
         self._session.commit()
         return None
