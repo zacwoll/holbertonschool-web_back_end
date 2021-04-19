@@ -4,36 +4,31 @@ from fixtures import TEST_PAYLOAD
 from parameterized import parameterized, parameterized_class
 import unittest
 from unittest.mock import Mock, patch, PropertyMock
-from urllib.error import HTTPError
-from utils import memoize
 
 
 class TestGithubOrgClient(unittest.TestCase):
     """ Test GitHub Org Client """
 
     @parameterized.expand([
-        ("google"),
-        ("abc")
+        "google",
+        "abc"
     ])
-    @patch('client.get_json', return_value={"payload": True})
+    @patch('client.get_json', return_value={'key': 'value'})
     def test_org(self, org, mock_request):
         """ Test that GithubOrgClient.org returns the correct value """
         client = GithubOrgClient(org)
-        self.assertEqual(client.org, mock_request.return_value)
+        self.assertEqual(client.org, {'key': 'value'})
         mock_request.assert_called_once_with(
             f"https://api.github.com/orgs/{org}")
 
     def test_public_repos_url(self):
         """ test _public_repos_url private method """
-        with patch.object(GithubOrgClient,
-                          "org",
-                          new_callable=PropertyMock,
-                          return_value={"repos_url": "google"}) as mock_get:
-            json = {"repos_url": "google"}
-            client = GithubOrgClient(json.get("repos_url"))
-            repos_url = client._public_repos_url
-            mock_get.assert_called_once()
-            self.assertEqual(repos_url, mock_get.return_value.get("repos_url"))
+        with patch('client.GithubOrgClient.org',
+                   new_callable=PropertyMock) as mock_org:
+            mock_org.return_value = {"repos_url": "https://fake_url.com"}
+            test_obj = GithubOrgClient('foo')
+            self.assertEqual(test_obj._public_repos_url,
+                             "https://fake_url.com")
 
     @patch('client.get_json', return_value=[{"name": "google"}])
     def test_public_repos(self, mock_get_json):
