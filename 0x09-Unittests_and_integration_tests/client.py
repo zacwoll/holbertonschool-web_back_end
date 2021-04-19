@@ -13,13 +13,13 @@ from utils import (
 )
 
 
-class GitHubOrgClient:
+class GithubOrgClient:
     """A Githib org client
     """
     ORG_URL = "https://api.github.com/orgs/{org}"
 
     def __init__(self, org_name: str) -> None:
-        """Init method of GitHubOrgClient"""
+        """Init method of GithubOrgClient"""
         self._org_name = org_name
 
     @memoize
