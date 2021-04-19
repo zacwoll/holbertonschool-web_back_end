@@ -17,7 +17,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, org, mock_request):
         """ Test that GithubOrgClient.org returns the correct value """
         client = GithubOrgClient(org)
-        self.assertEqual(client.org, {'key': 'value'})
+        self.assertEqual(client.org, mock_request.return_value)
         mock_request.assert_called_once_with(
             f"https://api.github.com/orgs/{org}")
 
