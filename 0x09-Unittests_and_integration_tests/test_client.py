@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+""" Test Module for client.py """
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
 from parameterized import parameterized, parameterized_class
