@@ -20,7 +20,7 @@ Babel.default_timezone = 'UTC'
 @app.route('/', methods=["GET"])
 def default_route():
     """ Returns a greeting """
-    return render_template('0-index.html')
+    return render_template('1-index.html')
 
 
 if __name__ == "__main__":
