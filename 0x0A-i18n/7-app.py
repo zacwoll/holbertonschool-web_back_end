@@ -2,6 +2,7 @@
 """ Basic Flask App """
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
+import pytz
 
 
 class Config:
@@ -47,6 +48,25 @@ def get_locale():
     if header:
         return header
     return request.accept_languages.best_match(Config.LANGUAGES)
+
+
+@babel.timezoneselector
+def get_timezone():
+    """ Get timezone from request """
+    tz = request.args.get('timezone')
+    if tz:
+        try:
+            return pytz.timezone(tz)
+        except pytz.exceptions.UnknownTimeZoneError:
+            pass
+    if g.user:
+        tz = g.user.get('timezone')
+        if tz:
+            try:
+                return pytz.timezone(tz)
+            except pytz.exceptions.UnknownTimeZoneError:
+                pass
+    return pytz.timezone('utc')
 
 
 def get_user(user):

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """ Basic Flask App """
+from babel.dates import format_datetime
+from datetime import datetime
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
+import pytz
 
 
 class Config:
@@ -29,7 +32,8 @@ users = {
 @app.route('/', methods=["GET"])
 def default_route():
     """ Returns a greeting """
-    return render_template('6-index.html', user=g.user)
+    time = format_datetime(datetime.now(get_timezone()), locale=get_locale())
+    return render_template('index.html', user=g.user, current_time=time)
 
 
 @babel.localeselector
@@ -47,6 +51,25 @@ def get_locale():
     if header:
         return header
     return request.accept_languages.best_match(Config.LANGUAGES)
+
+
+@babel.timezoneselector
+def get_timezone():
+    """ Get timezone from request """
+    tz = request.args.get('timezone')
+    if tz:
+        try:
+            return pytz.timezone(tz)
+        except pytz.exceptions.UnknownTimeZoneError:
+            pass
+    if g.user:
+        tz = g.user.get('timezone')
+        if tz:
+            try:
+                return pytz.timezone(tz)
+            except pytz.exceptions.UnknownTimeZoneError:
+                pass
+    return pytz.timezone('utc')
 
 
 def get_user(user):
