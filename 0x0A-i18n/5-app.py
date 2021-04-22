@@ -41,7 +41,7 @@ def get_user(user):
         return users.get(int(user))
 
 
-@app.before_request()
+@app.before_request
 def before_request():
     """ Allow login """
     g.user = get_user(request.args.get('login_as'))
@@ -50,7 +50,7 @@ def before_request():
 @app.route('/', methods=["GET"])
 def default_route():
     """ Returns a greeting """
-    return render_template('4-index.html')
+    return render_template('5-index.html')
 
 
 if __name__ == "__main__":
