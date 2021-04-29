@@ -28,7 +28,7 @@ DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
 OPEN all_users;
 REPEAT
     FETCH all_users INTO user_id;
-    CALL ComputerAverageWeightedScoreForUser(user_id);
+    CALL ComputeAverageWeightedScoreForUser(user_id);
 UNTIL done END REPEAT;
 CLOSE all_users;
 
