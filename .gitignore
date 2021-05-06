@@ -1,3 +1,6 @@
 *.pyc
 *.DS_Store
 0x07-Session_authentication/.db_User.json
+0x0E-ES6_basic/.eslintrc.js
+0x0E-ES6_basic/babel.config.js
+node_modules/
