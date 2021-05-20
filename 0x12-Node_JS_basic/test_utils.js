@@ -1,6 +1,7 @@
 const readDatabase = require('./full_server/utils');
 
-readDatabase("database.csv")
+
+readDatabase("./database.csv")
     .then(() => {
         console.log("Done!");
     })
