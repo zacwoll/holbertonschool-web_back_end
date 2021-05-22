@@ -1,25 +1,29 @@
 const readDatabase = require('../utils');
 
-class StudentsController {
+export default class StudentsController {
     static getAllStudents(request, response) {
         response.statusCode = 200;
         response.setHeader('Content-Type', 'text/plain');
         // readDatabase returns { 'CS': ['Zac', 'Trevor', 'Spencer'] }
-        await readDatabase('../../database.csv').then((data) => {
+        readDatabase('./database.csv').then((data) => {
             response.write('This is the list of our students\n');
-            response.write(`Number of students: \n`);
-            response.write(`Number of students in CS: . List: \n`);
-            response.write(`Number of students in SWE: . List: `);
+            response.write(`Number of students in CS: ${data['CS'].length}. List: ${data['CS'].join(', ')}\n`);
+            response.write(`Number of students in SWE: ${data['SWE'].length}. List: ${data['SWE'].join(', ')}\n`);
             response.end();
         }).catch((err) => response.send(err.message));
     }
-    static getAllStudentsByMajor(request, response, major) {
+    static getAllStudentsByMajor(request, response) {
         response.statusCode = 200;
         response.setHeader('Content-Type', 'text/plain');
-        await readDatabase('../../database.csv').then((data) => {
-            response.write('This is the list of our students\n');
-            response.write(`List: \n`);
-            response.write(`List: `);
+        let { major } = request.params;
+        if (major !== 'CS' && major !== 'SWE') {
+            response.statusCode = 500;
+            response.write('Major parameter must be CS or SWE\n');
+            response.end();
+            return;
+        }
+        readDatabase('./database.csv').then((data) => {
+            response.write(`List: ${data[major].join(', ')}\n`);
             response.end();
         }).catch((err) => response.send(err.message));
     }

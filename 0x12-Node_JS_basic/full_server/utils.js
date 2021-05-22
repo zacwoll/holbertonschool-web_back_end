@@ -15,13 +15,15 @@ async function readDatabase(path) {
     }));
     let fields = students.map(student => student.field);
     let unique_fields = new Set(fields);
-    let students_by_field = {}
-    for (field of unique_fields) {
+    let students_by_field = {};
+    for (let field of unique_fields) {
       students_by_field[field] = [];
     }
-    for (student of students) {
+    for (let student of students) {
         students_by_field[student.field].push(student.firstName);
     }
+    console.log(students_by_field);
+    return students_by_field;
     // console.log(students_by_field);
 }
 
