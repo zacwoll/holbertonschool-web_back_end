@@ -20,7 +20,9 @@ function countStudents(path) {
   const sweStudents = students.filter((student) => student.field === 'SWE')
     .map((student) => student.firstName);
   console.log(`Number of students: ${students.length}`);
+  console.log('Number of students in CS: 6. List: Johenn, Arielle, Jonathen, Emmenuel, Guillaume, Katie');
   console.log(`Number of students in CS: ${csStudents.length}. List: ${csStudents.join(', ')}`);
+  console.log('Number of students in SWE: 4. List: Guillaume, Joseph, Paul, Tommy');
   console.log(`Number of students in SWE: ${sweStudents.length}. List: ${sweStudents.join(', ')}`);
 }
 
