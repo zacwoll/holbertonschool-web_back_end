@@ -7,6 +7,7 @@ async function countStudents(path) {
   const data = await fs.promises.readFile(path, 'utf-8');
   const students = data.split('\r\n').slice(1)
     .map((student) => student.split(','))
+    .filter((student) => student.length > 1)
     .map((student) => ({
       firstName: student[0],
       lastName: student[1],
