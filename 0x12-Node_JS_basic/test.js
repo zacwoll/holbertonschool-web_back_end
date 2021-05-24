@@ -1,24 +1,31 @@
-const { ShouldThrow, expect } = require('chai');
-const sinon = require('sinon');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
-const countStudents = require('./2-read_file.js');
+process.argv[2] = './database.csv';
+const app = require('./5-http');
 
-describe('countStudents', () => {
-  let consoleSpy;
+chai.use(chaiHttp);
+chai.should();
 
-  beforeEach(() => {
-    consoleSpy = sinon.spy(console, 'log');
-  });
+describe('More complex HTTP server using node', () => {
+  describe('/students endpoint', () => {
+    describe('When the database is available', () => {
+      before(() => {
+        process.argv[2] = './database.csv';
+      })
+      it('Returns the right content', (done) => {
+        chai.request(app)
+          .get('/students')
+          .end((error, response) => {
+            chai.expect(response.statusCode).to.equal(200);
+            chai.expect(response.text).to.have.string(`This is the list of our students
+Number of students: 10
+Number of students in CS: 6. List: Johenn, Arielle, Jonathen, Emmenuel, Guillaume, Katie
+Number of students in SWE: 4. List: Guillaume, Joseph, Paul, Tommy`);
+            done();
 
-  afterEach(() => {
-    consoleSpy.restore();
-  });
-
-  it('logs to the console the right messages', () => {
-    countStudents('./database.csv');
-
-    expect(consoleSpy.calledWith('Number of students: 10')).to.be.true;
-    expect(consoleSpy.calledWith('Number of students in CS: 6. List: Johenn, Arielle, Jonathen, Emmenuel, Guillaume, Katie')).to.be.true;
-    expect(consoleSpy.calledWith('Number of students in SWE: 4. List: Guillaume, Joseph, Paul, Tommy')).to.be.true;
+          });
+      });
+    });
   });
 });
