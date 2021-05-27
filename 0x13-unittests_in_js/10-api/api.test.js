@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const request = require('request')
+const url = 'http://localhost:7865';
 
 describe('Index page', () => {
     it('GET /', (done) => {
@@ -33,28 +34,34 @@ describe('Index page', () => {
 			}
 		}, done());
 	});
+});
 
-    it('POST /login', (done) => {
-        const options = {
-            url: 'http://localhost:7865/login',
-            method: 'POST',
-            json: { 'userName': 'Betty' }
-        }
-        request(options, (error, response, body) => {
-            expect(response.statusCode).to.equal(200)
-            expect(body).to.equal('Welcome Betty')
-        }, done());
-    });
-
+describe('Available_Payments page', () => {
     it('GET /available_payments', (done) => {
-        request('http://localhost:7865/available_payments', (error, response, body) => {
-            expect(response.statusCode).to.equal(200)
+        request(`${url}/available_payments`, (err, res, body) => {
+            expect(res.statusCode).to.equal(200)
             expect(body).to.deep.equal(JSON.stringify({
                 payment_methods: {
                     credit_cards: true,
                     paypal: false
                 }
             }));
-        }, done());
+            done();
+        });
+    });
+});
+
+describe('Login page', () => {
+    const options = {
+        url: 'http://localhost:7865/login',
+        method: 'POST',
+        json: { 'userName': 'Betty' }
+    }
+    it('POST /login', (done) => {
+        request(options, (err, res, body) => {
+            expect(res.statusCode).to.equal(200);
+            expect(body).to.equal('Welcome Betty');
+            done();
+        });
     });
 });
