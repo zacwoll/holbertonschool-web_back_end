@@ -34,7 +34,7 @@ describe('Index page', () => {
 		}, done());
 	});
 
-    it('GET /login', (done) => {
+    it('POST /login', (done) => {
         const options = {
             url: 'http://localhost:7865/login',
             method: 'POST',
