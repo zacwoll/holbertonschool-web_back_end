@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-const getPaymentTokenFromApi = require("./6-payment_token").default;
+const getPaymentTokenFromApi = require("./6-payment_token");
 
 describe('getPaymentTokenFromApi', () => {
     it('checks output of getPaymentTokenFromApi with true as success', (done) => {
