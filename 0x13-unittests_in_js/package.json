@@ -4,7 +4,7 @@
   "description": "- How to use Mocha to write a test suite\r - How to use different assertion libraries (Node or Chai)\r - How to present long test suites\r - When and how to use spies\r - When and how to use stubs\r - What are hooks and when to use them\r - Unit testing with Async functions\r - How to write integration tests with a small node server",
   "main": "0-calcul.js",
   "scripts": {
-    "test": "mocha --require babel-core/register *.test.js"
+    "test": "mocha --require babel-core/register"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,8 @@
     "chai": "^4.3.4",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-jest": "^24.3.6",
+    "express": "^4.17.1",
+    "request": "^2.88.2",
     "sinon": "^11.1.1"
   },
   "babel": {
