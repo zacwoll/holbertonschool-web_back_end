@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const request = require('request')
 
 describe('Index page', () => {
-    it('GET / exists and outputs', (done) => {
+    it('GET /', (done) => {
         request('http://localhost:7865/', (error, response, body) => {
             expect(response.statusCode).to.equal(200)
             expect(body).to.equal('Welcome to the payment system')
@@ -31,13 +31,10 @@ describe('Index page', () => {
                 '</body>\n' +
                 '</html>\n');
 			}
-		}, done())
-	})
-})
+		}, done());
+	});
 
-
-describe('GET /login', () => {
-    it('checks output of curling login page with userName data', (done) => {
+    it('GET /login', (done) => {
         const options = {
             url: 'http://localhost:7865/login',
             method: 'POST',
@@ -46,13 +43,10 @@ describe('GET /login', () => {
         request(options, (error, response, body) => {
             expect(response.statusCode).to.equal(200)
             expect(body).to.equal('Welcome Betty')
-        }, done())
-    })
-})
+        }, done());
+    });
 
-
-describe('GET /available_payments', () => {
-    it('checks output of curling available_payments page', (done) => {
+    it('GET /available_payments', (done) => {
         request('http://localhost:7865/available_payments', (error, response, body) => {
             expect(response.statusCode).to.equal(200)
             expect(body).to.deep.equal(JSON.stringify({
@@ -60,7 +54,7 @@ describe('GET /available_payments', () => {
                     credit_cards: true,
                     paypal: false
                 }
-            }))
-        }, done())
-    })
-})
+            }));
+        }, done());
+    });
+});
