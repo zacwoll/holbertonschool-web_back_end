@@ -5,6 +5,7 @@ async function countStudents(path) {
     throw Error('Cannot load the database');
   }
   const data = await fs.promises.readFile(path, 'utf-8');
+  console.log(data.split('\n'));
   const students = data.split('\n')
     .map((student) => student.split(','))
     .filter((student) => student.length > 1 && student[0] !== 'firstname')
@@ -12,7 +13,8 @@ async function countStudents(path) {
       firstName: student[0],
       lastName: student[1],
       age: student[2],
-      field: student[3],
+      // Regex removes the '\r' within the last field
+      field: student[3].replace(/[\r]+/g, ''),
     }));
   const csStudents = students.filter((student) => student.field === 'CS')
     .map((student) => student.firstName);

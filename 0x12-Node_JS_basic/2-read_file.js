@@ -14,7 +14,8 @@ function countStudents(path) {
       firstName: student[0],
       lastName: student[1],
       age: student[2],
-      field: student[3],
+      // Regex removes the '\r' within the last field
+      field: student[3].replace(/[\r]+/g, ''),
     }));
   const csStudents = students.filter((student) => student.field === 'CS')
     .map((student) => student.firstName);
