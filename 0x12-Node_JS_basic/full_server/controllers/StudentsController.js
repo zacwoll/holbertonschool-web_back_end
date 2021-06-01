@@ -4,13 +4,15 @@ export default class StudentsController {
     static getAllStudents(request, response) {
         response.statusCode = 200;
         response.setHeader('Content-Type', 'text/plain');
-        // readDatabase returns { 'CS': ['Zac', 'Trevor', 'Spencer'] }
+        response.write('This is the list of our students\n');
         readDatabase('./database.csv').then((data) => {
-            response.write('This is the list of our students\n');
             response.write(`Number of students in CS: ${data['CS'].length}. List: ${data['CS'].join(', ')}\n`);
             response.write(`Number of students in SWE: ${data['SWE'].length}. List: ${data['SWE'].join(', ')}\n`);
             response.end();
-        }).catch((err) => response.send(err.message));
+        }).catch((err) => res.write(err.message))
+        .finally(() => {
+          res.end();
+        });
     }
     static getAllStudentsByMajor(request, response) {
         response.statusCode = 200;
