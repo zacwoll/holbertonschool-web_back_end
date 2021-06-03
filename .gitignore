@@ -2,3 +2,4 @@
 *.DS_Store
 0x07-Session_authentication/.db_User.json
 node_modules/
+*.zac
